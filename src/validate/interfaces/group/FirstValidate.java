@@ -1,4 +1,4 @@
-package interfaces.group;
+package validate.interfaces.group;
 
 /**
  * Created by Shinelon on 2017/7/8.

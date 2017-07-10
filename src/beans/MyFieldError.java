@@ -1,4 +1,6 @@
-package dao;
+package beans;
+
+import org.springframework.validation.FieldError;
 
 /**
  * Created by Shinelon on 2017/7/8.
@@ -12,6 +14,12 @@ public class MyFieldError {
         this.message = message;
     }
 
+    public MyFieldError(FieldError fieldError){
+        if(fieldError!=null) {
+            fieldName = fieldError.getObjectName();
+            message=fieldError.getDefaultMessage();
+        }
+    }
     public String getFieldName() {
         return fieldName;
     }

@@ -29,7 +29,7 @@
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>validatemessages.validatemessages</value>
+                <value>properties.validatemessages.validatemessages</value>
             </list>
         </property>
         <property name="defaultEncoding" value="utf-8"/>
@@ -58,7 +58,7 @@
 
 
     <!--包的扫描 包括controller的包和controllerAdvice的包!-->
-    <context:component-scan base-package="controller,controllerAdvice"/>
+    <context:component-scan base-package="controller"/>
 
     <!--自定义拦截器的配置-->
     <mvc:interceptors>

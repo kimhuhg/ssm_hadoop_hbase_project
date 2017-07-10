@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HelloInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("拦截器开始");
+//        System.out.println("拦截器开始");
         throw new NullPointerException("拦截器的空指针异常");
 //        return true;
     }
