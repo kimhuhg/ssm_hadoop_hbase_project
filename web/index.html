@@ -48,7 +48,7 @@
             success: function (data) {
                 //错误
                 if(data instanceof Array){
-                    alert(data.length);
+//                    alert(data.length);
                     for(var i=0;i<data.length;i++)
                         $("#"+data[i].fieldName+"1").val(data[i].message);
                 }else
