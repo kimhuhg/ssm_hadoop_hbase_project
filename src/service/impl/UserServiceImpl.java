@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int queryUserIsExist(String username) {
-        System.out.println("query开始");
         Integer result = userMapper.queryUserIsExist(username);//这句话就出问题了
         if (result != null)
             return result;
