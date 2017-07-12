@@ -6,6 +6,8 @@
 -- Generation Time: 2017-07-12 05:14:02
 -- 服务器版本： 10.1.19-MariaDB
 -- PHP Version: 5.6.28
+CREATE SCHEMA wwt_db;
+use wwt_db;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
