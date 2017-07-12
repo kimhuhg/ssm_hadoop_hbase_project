@@ -15,5 +15,5 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    Integer queryUserIsExist(String username);
+    int queryUserIsExist(String username);
 }

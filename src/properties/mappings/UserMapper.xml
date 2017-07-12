@@ -69,7 +69,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="queryUserIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT IFNULL(1,0) FROM user WHERE username=#{username} LIMIT 1
+    <select id="queryUserIsExist" parameterType="java.lang.String" resultType="int">
+        SELECT count(*) FROM user WHERE username=#{username} LIMIT 1
   </select>
 </mapper>

@@ -45,11 +45,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int queryUserIsExist(String username) {
-        Integer result = userMapper.queryUserIsExist(username);//这句话就出问题了
-        if (result != null)
-            return result;
-        else
-            return 0;
+        //这有2个解决方案，一个是在sql语句上优化，利用limit和count  一个是利用Integer，空值依然可以存储,现在用的是sql  用Integer需要判断一下null
+        return userMapper.queryUserIsExist(username);
+//        if (result != null)
+//            return result;
+//        else
+//            return 0;
     }
 
 
