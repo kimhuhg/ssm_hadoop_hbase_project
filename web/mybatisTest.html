@@ -6,14 +6,44 @@
 </head>
 <body>
 
-<p>点击测试mybatis 单表查询获得user信息</p>
-<form action="http://localhost:8080/springmvc/helloWorld/getUserByUsername" method="post">
-    用户名：<input name="username" type="text">
+<p>单表查询获得对应user信息</p>
+<form action="http://localhost:8080/springmvc/helloWorld/getUserById" method="post">
+    用户id：<input name="id" type="text">
     <input type="submit" value="提交">
 </form>
 <br><br>
 
+<p>单表更新user信息</p>
+<form action="http://localhost:8080/springmvc/helloWorld/updateUserById" method="post">
+    用户id：<input name="id" type="text">
+    用户名：<input name="username" type="text">
+    密码：<input name="password" type="text">
+    <input type="submit" value="提交">
+</form>
+<br><br>
 
+<p>删除对应id的user</p>
+<form action="http://localhost:8080/springmvc/helloWorld/deleteUserById" method="post">
+    用户id：<input name="id" type="text">
+    <input type="submit" value="提交">
+</form>
+<br><br>
+
+<p>嵌入新user信息</p>
+<form action="http://localhost:8080/springmvc/helloWorld/insertUser" method="post">
+    用户id：<input name="id" type="text">
+    用户名：<input name="username" type="text">
+    密码：<input name="password" type="text">
+    <input type="submit" value="提交">
+</form>
+<br><br>
+
+<p>多表查询user信息</p>
+<form action="http://localhost:8080/springmvc/helloWorld/getUserBook" method="post">
+    用户id：<input name="id" type="text">
+    <input type="submit" value="提交">
+</form>
+<br><br>
 
 <script src="js/jquery.min.js"></script>
 <script>

@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.GroupSequence;
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -15,6 +16,9 @@ import javax.validation.constraints.AssertTrue;
 
 @GroupSequence({FirstValidate.class, SecondValidate.class , FormUser.class})
 public class FormUser {
+    @NotNull(message = "{formUser.id.empty}",groups = {FirstValidate.class})
+    private Integer id;
+
     @NotEmpty(message = "{formUser.username.empty}",groups = {FirstValidate.class})
     @Length(min = 3, max = 6, message = "{formUser.username.length.error}",groups = {SecondValidate.class})
     private String username;
@@ -50,5 +54,13 @@ public class FormUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

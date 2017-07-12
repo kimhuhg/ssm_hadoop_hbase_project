@@ -7,14 +7,18 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
  * Created by Shinelon on 2017/7/9.
  */
 public class HelloInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        return true;
 //        System.out.println("拦截器开始");
-        throw new NullPointerException("拦截器的空指针异常");
+//        throw new NullPointerException("拦截器的空指针异常");
+        //拦截器是否在校验之前呢
 //        return true;
     }
 

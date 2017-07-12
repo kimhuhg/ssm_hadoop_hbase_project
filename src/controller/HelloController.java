@@ -2,6 +2,7 @@ package controller;
 
 
 import beans.MyFieldError;
+import beans.MyUser;
 import beans.User;
 import beans.FormUser;
 import org.hibernate.validator.constraints.Length;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import service.interfaces.UserService;
 
 import javax.annotation.Resource;
+import javax.management.ObjectName;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -30,9 +32,6 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/helloWorld")
 public class HelloController {
-
-    @Resource
-    private UserService userService;
 
     //   /helloWorld/say get方法就转到这个方法中
     @RequestMapping(path = "/say")
@@ -48,7 +47,7 @@ public class HelloController {
     }
 
     @RequestMapping(path = "/goMybatisTest")
-    public String goTo(){
+    public String goTo() {
         return "redirect:/mybatisTest.html";
     }
 
@@ -65,12 +64,11 @@ public class HelloController {
         throw new NullPointerException("ahahaha");
     }
 
-
     @RequestMapping(path = "/form")
     @ResponseBody
-    public Object formHandle(@Valid FormUser userDAO, BindingResult result) {
+    public Object formHandle(@Valid FormUser formUser, BindingResult result) {
         if (!result.hasErrors())
-            return new User(userDAO.getUsername(), userDAO.getPassword());
+            return new User(formUser.getId(), formUser.getUsername(), formUser.getPassword());
         else {
             List<FieldError> errors = result.getFieldErrors();
             List<MyFieldError> fieldErrors = new ArrayList<>();
@@ -80,17 +78,84 @@ public class HelloController {
         }
     }
 
-    @RequestMapping(path = "/getUserByUsername")
+
+    /*
+    * 下面是 mybatis测试，测试单表的增删查改
+    * */
+    @Resource
+    private UserService userService;
+
+    @RequestMapping(path = "/getUserById")
     @ResponseBody
-    public Object getUserFromDataByMybatis(String username) {
-        if(username!=null&&!username.isEmpty()) {
-            User user=userService.getUserByUsername(username);
-            if(user!=null)
+    public Object getUserFromDataByMybatis(Integer id) {
+        if (id != null) {
+            User user = userService.selectByPrimaryKey(id);
+            if (user != null)
                 return user;
             else
-                return new MyFieldError("userNull","查询不到用户");
+                return new MyFieldError("userNull", "查询不到用户");
+        } else
+            return new MyFieldError("username", "用户名不为空");
+    }
+
+    @RequestMapping(path = "/updateUserById")
+    @ResponseBody
+    public Object updateUserById(@Valid User user, BindingResult result) {
+        if (!result.hasErrors()) {
+            if (userService.updateByPrimaryKey(user) == 0)     //没有更新成功
+                return new MyFieldError("updateFail", "更新用户失败，可能原因是不存在该用户");
+            else    //更新成功
+                return "updateSuccess";
+        } else {
+            List<FieldError> errors = result.getFieldErrors();
+            List<MyFieldError> fieldErrors = new ArrayList<>();
+            for (FieldError temp : errors)
+                fieldErrors.add(new MyFieldError(temp.getField(), temp.getDefaultMessage()));
+            return fieldErrors;
         }
-        else
-            return new MyFieldError("username","用户名不为空");
+    }
+
+    @RequestMapping(path = "/deleteUserById")
+    @ResponseBody
+    public Object deleteUserById(Integer id) {
+        if (id != null) {
+            int result = userService.deleteByPrimaryKey(id);
+            if (result == 0)
+                return new MyFieldError("deleteFail", "删除用户失败，可能原因是用户不存在");
+            else
+                return "successDelete";
+        } else
+            return new MyFieldError("username", "用户名不为空");
+    }
+
+    @RequestMapping(path = "/insertUser")
+    @ResponseBody
+    public Object insertUser(@Valid User user, BindingResult result) {
+        if (!result.hasErrors()) {
+            int insertResult = userService.insert(user);
+            if (insertResult == 0)     //没有插入成功，在插入过程中发生了部分未知异常
+                return new MyFieldError("insertFail", "插入用户失败");
+            else if (insertResult == -1)
+                return new MyFieldError("duplicateInsert", "用户已经存在，不允许重复插入");
+            else    //更新成功  insertResult=1
+                return "insertSuccess";
+        } else {
+            List<FieldError> errors = result.getFieldErrors();
+            List<MyFieldError> fieldErrors = new ArrayList<>();
+            for (FieldError temp : errors)
+                fieldErrors.add(new MyFieldError(temp.getField(), temp.getDefaultMessage()));
+            return fieldErrors;
+        }
+    }
+
+    @RequestMapping(path = "/getUserBook")
+    @ResponseBody
+    public Object getUserBook(Integer id) {
+        /*可能查询的用户是存在的，但是他的部分属性信息不存在*/
+        if (id != null) {
+            MyUser myUser = userService.selectMyUserByPrimaryKey(id);
+            return myUser == null ? new MyFieldError("queryFail", "查询用户失败，可能原因是用户不存在") : myUser;
+        } else
+            return new MyFieldError("username", "用户名不为空");
     }
 }

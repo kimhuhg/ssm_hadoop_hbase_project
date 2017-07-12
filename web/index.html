@@ -13,6 +13,7 @@
 
 <p>表单测试json返回数据 这里面的input name和方法里面userDao的属性名字一一对应</p>
 <form action="http://localhost:8080/springmvc/helloWorld/form" method="post">
+    用户id：<input name="id" type="text" id="id2">
     用户名：<input name="username" type="text" id="username2">
     密码：<input name="password" type="text" id="password2">
     确认：<input name="confirm" type="text" id="confirm2">
@@ -20,8 +21,9 @@
 </form>
 <br><br>
 
-<p>用ajax  测试json返回数据</p>
+<p>用ajax 测试json返回数据</p>
 <form action="#">
+    用户id：<input name="id" type="text" id="id1">
     用户名：<input name="username" type="text" id="username1">
     密码：<input name="password" type="text" id="password1">
     确认：<input name="confirm" type="text" id="confirm1">
@@ -30,33 +32,32 @@
 <br><br>
 
 
-
-
 <br><br>
 </body>
 <script src="js/jquery.min.js"></script>
 <script>
-    $("#submit1").bind("click",function (e) {
+    $("#submit1").bind("click", function (e) {
         $.ajax({
             type: 'post',
             data: {
+                "id": $("#id1").val(),
                 "username": $("#username1").val(),
                 "password": $("#password1").val(),
-                "confirm":$("#confirm1").val()
+                "confirm": $("#confirm1").val()
             },
             url: "http://localhost:8080/springmvc/helloWorld/form",
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (data) {
                 //错误
-                if(data instanceof Array){
+                if (data instanceof Array) {
 //                    alert(data.length);
-                    for(var i=0;i<data.length;i++)
-                        $("#"+data[i].fieldName+"1").val(data[i].message);
-                }else
-                    alert(data.username+" "+data.password);
+                    for (var i = 0; i < data.length; i++)
+                        $("#" + data[i].fieldName + "1").val(data[i].message);
+                } else
+                    alert(data.username + " " + data.password);
             },
             error: function (xmlhttprequest) {
-                    window.location.href="error.html";
+                window.location.href = "error.html";
             }
         })
         e.preventDefault();

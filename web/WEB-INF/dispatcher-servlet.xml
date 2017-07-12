@@ -63,7 +63,7 @@
     <!--自定义拦截器的配置-->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/helloWorld/testException"/>
+            <mvc:mapping path="/helloWorld/form"/>
             <bean class="Interceptors.HelloInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
