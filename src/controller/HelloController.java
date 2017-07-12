@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import service.interfaces.UserService;
 
 import javax.annotation.Resource;
+import javax.jws.Oneway;
 import javax.management.ObjectName;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -157,5 +158,19 @@ public class HelloController {
             return myUser == null ? new MyFieldError("queryFail", "查询用户失败，可能原因是用户不存在") : myUser;
         } else
             return new MyFieldError("username", "用户名不为空");
+    }
+
+    @RequestMapping(path = "/transactionalTest")
+    @ResponseBody
+    public Object transactionalTest(@Valid User user, BindingResult result){
+        if (!result.hasErrors()) {
+            return userService.transactionalTest(user);
+        } else {
+            List<FieldError> errors = result.getFieldErrors();
+            List<MyFieldError> fieldErrors = new ArrayList<>();
+            for (FieldError temp : errors)
+                fieldErrors.add(new MyFieldError(temp.getField(), temp.getDefaultMessage()));
+            return fieldErrors;
+        }
     }
 }

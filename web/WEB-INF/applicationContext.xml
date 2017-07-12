@@ -59,8 +59,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
-
+    <!-- 开启事务注解 可以使用 spring 的自动事务管理 @Transactional-->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

@@ -21,4 +21,7 @@ public interface UserService {
     //MyUser 有关的
     MyUser selectMyUserByPrimaryKey(Integer id);
 
+    //事务测试
+    User transactionalTest(User user);
+
 }

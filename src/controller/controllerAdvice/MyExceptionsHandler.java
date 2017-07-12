@@ -25,7 +25,7 @@ public class MyExceptionsHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public String exceptionHandle(Exception exception) {
 //        System.out.println("第一个处理"+exception.getMessage());
-        System.out.println(exception.getClass().getName()+exception.getMessage());
+        exception.printStackTrace();
         return "forward:/error.html";
     }
 

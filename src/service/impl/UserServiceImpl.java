@@ -5,6 +5,7 @@ import beans.User;
 import dao.MyUserMapper;
 import dao.UserMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import service.interfaces.UserService;
 
 import javax.annotation.Resource;
@@ -53,6 +54,13 @@ public class UserServiceImpl implements UserService {
 //            return 0;
     }
 
+    @Transactional
+    @Override
+    public User transactionalTest(User user) {
+        System.out.println("更新user结果（之后会发生异常）测试事务回滚："+updateByPrimaryKey(user));
+        int i=1/0;//发现异常 就会不执行之后的，开始事务回滚
+        return selectByPrimaryKey(user.getId());
+    }
 
     //MyUser有关
     @Resource
@@ -64,4 +72,7 @@ public class UserServiceImpl implements UserService {
         //没有找到的话null，找得到就有值
         return myUserMapper.selectByPrimaryKey(id);
     }
+
+
+
 }
