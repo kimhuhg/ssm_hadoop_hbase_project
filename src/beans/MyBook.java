@@ -1,6 +1,8 @@
 package beans;
 
-public class MyBook {
+import java.io.Serializable;
+
+public class MyBook implements Serializable {
     private Integer id;
 
     private String bookname;

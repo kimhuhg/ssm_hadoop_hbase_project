@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.GroupSequence;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 
 /**
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @GroupSequence({FirstValidate.class, SecondValidate.class , FormUser.class})
-public class FormUser {
+public class FormUser implements Serializable {
     @NotNull(message = "{formUser.id.empty}",groups = {FirstValidate.class})
     private Integer id;
 
@@ -40,6 +41,10 @@ public class FormUser {
         this.confirm = confirm;
     }
 
+    public String getConfirm() {
+        return confirm;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -62,5 +67,15 @@ public class FormUser {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public FormUser(Integer id, String username, String password, String confirm) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.confirm = confirm;
+    }
+
+    public FormUser() {
     }
 }

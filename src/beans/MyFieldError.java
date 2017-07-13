@@ -2,10 +2,12 @@ package beans;
 
 import org.springframework.validation.FieldError;
 
+import java.io.Serializable;
+
 /**
  * Created by Shinelon on 2017/7/8.
  */
-public class MyFieldError {
+public class MyFieldError implements Serializable {
     private String fieldName;
     private String message;
 

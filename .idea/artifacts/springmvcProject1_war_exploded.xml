@@ -13,6 +13,7 @@
           <element id="library" level="project" name="jackson-all-2.8.0" />
           <element id="library" level="project" name="org.hibernate:hibernate-validator:5.4.0.Final" />
           <element id="library" level="project" name="org.mybatis:mybatis-spring:1.3.1" />
+          <element id="library" level="project" name="spring-mvc-test" />
         </element>
       </element>
     </root>

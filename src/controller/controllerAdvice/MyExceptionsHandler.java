@@ -26,8 +26,17 @@ public class MyExceptionsHandler {
     public String exceptionHandle(Exception exception) {
 //        System.out.println("第一个处理"+exception.getMessage());
         exception.printStackTrace();
-        return "forward:/error.html";
+        return "redirect:/error.html";
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public String nullPointerExceptionHandle(NullPointerException exception) {
+        System.out.println("第一个处理"+exception.getMessage());
+        return "redirect:/error.html";
+    }
+
+
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

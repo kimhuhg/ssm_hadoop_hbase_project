@@ -4,8 +4,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
 
     @NotNull(message = "{formUser.id.empty}")
     private Integer id;

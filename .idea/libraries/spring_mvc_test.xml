@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="spring-mvc-test">
+    <CLASSES>
+      <root url="jar://E:/package/javaTest/accessors-smart-1.2.jar!/" />
+      <root url="jar://E:/package/javaTest/asm-5.0.4.jar!/" />
+      <root url="jar://E:/package/javaTest/byte-buddy-1.6.11.jar!/" />
+      <root url="jar://E:/package/javaTest/byte-buddy-agent-1.6.11.jar!/" />
+      <root url="jar://E:/package/javaTest/commons-logging-1.2.jar!/" />
+      <root url="jar://E:/package/javaTest/hamcrest-core-1.3.jar!/" />
+      <root url="jar://E:/package/javaTest/hamcrest-library-1.3.jar!/" />
+      <root url="jar://E:/package/javaTest/json-path-2.4.0.jar!/" />
+      <root url="jar://E:/package/javaTest/json-path-assert-2.4.0.jar!/" />
+      <root url="jar://E:/package/javaTest/json-smart-2.3.jar!/" />
+      <root url="jar://E:/package/javaTest/junit-4.12.jar!/" />
+      <root url="jar://E:/package/javaTest/objenesis-2.5.jar!/" />
+      <root url="jar://E:/package/javaTest/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://E:/package/javaTest/mockito-core-2.7.22.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

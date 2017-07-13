@@ -173,4 +173,13 @@ public class HelloController {
             return fieldErrors;
         }
     }
+
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }
