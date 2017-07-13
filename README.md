@@ -1,5 +1,5 @@
-#非Maven的基本环境SSM框架idea项目
-
+非Maven的基本环境SSM框架idea项目
+==============================
 基本的SSM框架的非Maven idea 项目 <br/>
 用于给想一步步导包helloworld开始学习 而不想用Maven建项目的我们<br/>
 
