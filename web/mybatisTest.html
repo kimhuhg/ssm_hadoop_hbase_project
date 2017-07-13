@@ -7,14 +7,14 @@
 <body>
 
 <p>单表查询获得对应user信息</p>
-<form action="http://localhost:8080/springmvc/helloWorld/getUserById" method="post">
+<form action="helloWorld/getUserById" method="post">
     用户id：<input name="id" type="text">
     <input type="submit" value="提交">
 </form>
 <br><br>
 
 <p>单表更新user信息</p>
-<form action="http://localhost:8080/springmvc/helloWorld/updateUserById" method="post">
+<form action="helloWorld/updateUserById" method="post">
     用户id：<input name="id" type="text">
     用户名：<input name="username" type="text">
     密码：<input name="password" type="text">
@@ -23,14 +23,14 @@
 <br><br>
 
 <p>删除对应id的user</p>
-<form action="http://localhost:8080/springmvc/helloWorld/deleteUserById" method="post">
+<form action="helloWorld/deleteUserById" method="post">
     用户id：<input name="id" type="text">
     <input type="submit" value="提交">
 </form>
 <br><br>
 
 <p>嵌入新user信息</p>
-<form action="http://localhost:8080/springmvc/helloWorld/insertUser" method="post">
+<form action="helloWorld/insertUser" method="post">
     用户id：<input name="id" type="text">
     用户名：<input name="username" type="text">
     密码：<input name="password" type="text">
@@ -39,7 +39,7 @@
 <br><br>
 
 <p>多表查询user信息</p>
-<form action="http://localhost:8080/springmvc/helloWorld/getUserBook" method="post">
+<form action="helloWorld/getUserBook" method="post">
     用户id：<input name="id" type="text">
     <input type="submit" value="提交">
 </form>
@@ -47,7 +47,7 @@
 
 <p>事务管理测试，先对用户进行更新，然后出现异常，回滚之前的更新,会出现没有产生更新</p>
 <p>不进行事务管理的话，比如一个流程中，先对用户进行更新，然后产生了异常，更新就已经发生了，添加了事务管理就会对之前的更新进行回退，恢复流程最开始状态</p>
-<form action="http://localhost:8080/springmvc/helloWorld/transactionalTest" method="post">
+<form action="helloWorld/transactionalTest" method="post">
     用户id：<input name="id" type="text">
     用户名：<input name="username" type="text">
     密码：<input name="password" type="text">
