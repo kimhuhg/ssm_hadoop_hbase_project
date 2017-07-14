@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                          http://www.springframework.org/schema/beans/spring-beans.xsd
+                          ">
+
+    <!--在userService测试的时候 需要添加的userService -->
+    <bean id="userService" class="service.impl.UserServiceImpl"></bean>
+
+    <!--在userService测试的时候 需要添加的mapper 模拟类 -->
+    <bean id="userMapper" class="org.mockito.Mockito" factory-method="mock" >
+        <constructor-arg value="dao.UserMapper"></constructor-arg>
+    </bean>
+    <bean id="myUserMapper" class="org.mockito.Mockito" factory-method="mock" >
+        <constructor-arg value="dao.MyUserMapper"></constructor-arg>
+    </bean>
+    <bean id="myBookMapper" class="org.mockito.Mockito" factory-method="mock" >
+        <constructor-arg value="dao.MyBookMapper"></constructor-arg>
+    </bean>
+</beans>

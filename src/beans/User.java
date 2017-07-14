@@ -61,4 +61,17 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof User) {
+            if(((User) obj).getId()==this.getId()
+                    &&((User) obj).getUsername().equals(this.getUsername())
+                    &&((User) obj).getPassword().equals(this.getPassword()))
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
 }

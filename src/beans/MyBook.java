@@ -51,4 +51,17 @@ public class MyBook implements Serializable {
                 ", userid=" + userid +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof MyBook) {
+            if (((MyBook) obj).getBookname().equals(this.getBookname())
+                    && ((MyBook) obj).getId().equals(this.getId())
+                    && ((MyBook) obj).getUserid().equals(this.getUserid()))
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
 }

@@ -5,22 +5,18 @@ import beans.MyFieldError;
 import beans.MyUser;
 import beans.User;
 import beans.FormUser;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.http.HttpStatus;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.portlet.ModelAndView;
 import service.interfaces.UserService;
 
 import javax.annotation.Resource;
-import javax.jws.Oneway;
-import javax.management.ObjectName;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -86,6 +82,7 @@ public class HelloController {
     @Resource
     private UserService userService;
 
+
     @RequestMapping(path = "/getUserById")
     @ResponseBody
     public Object getUserFromDataByMybatis(Integer id) {
@@ -122,7 +119,9 @@ public class HelloController {
         if (id != null) {
             int result = userService.deleteByPrimaryKey(id);
             if (result == 0)
-                return new MyFieldError("deleteFail", "删除用户失败，可能原因是用户不存在");
+                return new MyFieldError("deleteFail", "删除用户失败，原因是用户不存在");
+            else if(result==-1)
+                return new MyFieldError("deleteFail", "删除用户失败，原因是用户删除过程前需要先删除用户对应的书本信息");
             else
                 return "successDelete";
         } else
@@ -174,12 +173,4 @@ public class HelloController {
         }
     }
 
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 }

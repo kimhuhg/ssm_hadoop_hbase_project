@@ -10,7 +10,6 @@
                           http://www.springframework.org/schema/tx/spring-tx.xsd
                           ">
 
-
     <context:component-scan base-package="service"/>
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
