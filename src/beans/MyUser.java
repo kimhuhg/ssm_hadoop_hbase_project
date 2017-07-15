@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public class MyUser implements Serializable {
+
     private Integer id;
-
     private String username;
-
     private String password;
 
     private List<MyBook> books;
@@ -19,7 +18,6 @@ public class MyUser implements Serializable {
     }
 
     public MyUser() {
-        super();
     }
 
     public Integer getId() {
@@ -35,7 +33,7 @@ public class MyUser implements Serializable {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
     }
 
     public String getPassword() {
@@ -43,7 +41,7 @@ public class MyUser implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public List<MyBook> getBooks() {

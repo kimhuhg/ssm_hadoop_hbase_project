@@ -73,7 +73,6 @@ public class ControllerTest {
     @Test
     public void testUrlTestException() throws Exception{
         mockMvc.perform(get("/helloWorld/testException"))
-                .andExpect(status().isNotFound())
                 .andExpect(redirectedUrl("/error.html"))
                 .andDo(print())
                 .andReturn();
