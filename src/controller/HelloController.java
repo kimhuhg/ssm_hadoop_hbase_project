@@ -6,6 +6,8 @@ import beans.MyUser;
 import beans.User;
 import beans.FormUser;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +31,11 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/helloWorld")
 public class HelloController {
+
+    //用于国际化消息
+    @Autowired
+    private ResourceBundleMessageSource messageSource;
+
 
     //   /helloWorld/say get方法就转到这个方法中
     @RequestMapping(path = "/say")
@@ -68,11 +75,11 @@ public class HelloController {
             return new User(formUser.getId(), formUser.getUsername(), formUser.getPassword());
         else {
             List<FieldError> errors = result.getFieldErrors();
+            //errors.get(0).getRejectedValue().toString();//这个方法得到的是对应参数的传入值
             List<MyFieldError> fieldErrors = new ArrayList<>();
             for (FieldError temp : errors) {
-                System.out.println(temp.isBindingFailure());
                 if (temp.isBindingFailure())
-                    fieldErrors.add(new MyFieldError(temp.getField(), "数据格式不对"));
+                    fieldErrors.add(new MyFieldError(temp.getField(),messageSource.getMessage("formUser.id.conversion.error",null,null)));
                 else
                     fieldErrors.add(new MyFieldError(temp.getField(), temp.getDefaultMessage()));
             }
@@ -96,9 +103,9 @@ public class HelloController {
             if (user != null)
                 return user;
             else
-                return new MyFieldError("userNull", "查询不到用户");
+                return new MyFieldError("userNull",messageSource.getMessage("user.null",null,null));
         } else
-            return new MyFieldError("username", "用户名不为空");
+            return new MyFieldError("username", messageSource.getMessage("formUser.username.empty",null,null));
     }
 
     @RequestMapping(path = "/updateUserById")
@@ -106,7 +113,7 @@ public class HelloController {
     public Object updateUserById(@Valid User user, BindingResult result) {
         if (!result.hasErrors()) {
             if (userService.updateByPrimaryKey(user) == 0)     //没有更新成功
-                return new MyFieldError("updateFail", "更新用户失败，可能原因是不存在该用户");
+                return new MyFieldError("updateFail",messageSource.getMessage("update.fail",null,null) );
             else    //更新成功
                 return "updateSuccess";
         } else {
@@ -124,13 +131,13 @@ public class HelloController {
         if (id != null) {
             int result = userService.deleteByPrimaryKey(id);
             if (result == 0)
-                return new MyFieldError("deleteFail", "删除用户失败，原因是用户不存在");
+                return new MyFieldError("delete.not.exist.fail", messageSource.getMessage("delete.not.exist.fail",null,null));
             else if(result==-1)
-                return new MyFieldError("deleteFail", "删除用户失败，原因是用户删除过程前需要先删除用户对应的书本信息");
+                return new MyFieldError("delete.foreignkey.fail",  messageSource.getMessage("delete.foreignkey.fail",null,null));
             else
                 return "successDelete";
         } else
-            return new MyFieldError("username", "用户名不为空");
+            return new MyFieldError("username", messageSource.getMessage("formUser.username.empty",null,null));
     }
 
     @RequestMapping(path = "/insertUser")
@@ -139,9 +146,9 @@ public class HelloController {
         if (!result.hasErrors()) {
             int insertResult = userService.insert(user);
             if (insertResult == 0)     //没有插入成功，在插入过程中发生了部分未知异常
-                return new MyFieldError("insertFail", "插入用户失败");
+                return new MyFieldError("insert.fail", messageSource.getMessage("insert.fail",null,null));
             else if (insertResult == -1)
-                return new MyFieldError("duplicateInsert", "用户已经存在，不允许重复插入");
+                return new MyFieldError("insert.duplicate", messageSource.getMessage("insert.duplicate",null,null));
             else    //更新成功  insertResult=1
                 return "insertSuccess";
         } else {
@@ -159,9 +166,9 @@ public class HelloController {
         /*可能查询的用户是存在的，但是他的部分属性信息不存在*/
         if (id != null) {
             MyUser myUser = userService.selectMyUserByPrimaryKey(id);
-            return myUser == null ? new MyFieldError("queryFail", "查询用户失败，可能原因是用户不存在") : myUser;
+            return myUser == null ? new MyFieldError("query.fail", messageSource.getMessage("query.fail",null,null)) : myUser;
         } else
-            return new MyFieldError("username", "用户名不为空");
+            return new MyFieldError("username", messageSource.getMessage("formUser.username.empty",null,null));
     }
 
     @RequestMapping(path = "/transactionalTest")
