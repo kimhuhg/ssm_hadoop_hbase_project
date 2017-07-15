@@ -69,8 +69,13 @@ public class HelloController {
         else {
             List<FieldError> errors = result.getFieldErrors();
             List<MyFieldError> fieldErrors = new ArrayList<>();
-            for (FieldError temp : errors)
-                fieldErrors.add(new MyFieldError(temp.getField(), temp.getDefaultMessage()));
+            for (FieldError temp : errors) {
+                System.out.println(temp.isBindingFailure());
+                if (temp.isBindingFailure())
+                    fieldErrors.add(new MyFieldError(temp.getField(), "数据格式不对"));
+                else
+                    fieldErrors.add(new MyFieldError(temp.getField(), temp.getDefaultMessage()));
+            }
             return fieldErrors;
         }
     }

@@ -95,8 +95,8 @@ public class ControllerTest {
 //                .andDo(print())
 //                .andReturn();
         MvcResult mvcResult2 = mockMvc.perform(post("/helloWorld/form")
-                .param("id", "123")
-                .param("username", "as")
+                .param("id", "asd")
+                .param("username", "123")
                 .param("password", "1234567")
                 .param("confirm", "123456"))
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
