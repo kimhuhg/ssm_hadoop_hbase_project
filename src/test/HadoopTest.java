@@ -24,11 +24,15 @@ import java.util.Map;
 public class HadoopTest {
     @Resource
     private HbaseTemplate hbaseTemplate;
-    private final String encoding = "utf-8";
     private String tableName = "bigtable_hydro";
     private String familyName = "hydro";
     private String rowKey = "09B26011340020140531";
-
+    //列族 中的所有列
+    private String Z="Z";
+    private String ZRCD="ZRCD";
+    private String STCD="STCD";
+    private String Q="Q";
+    private String TM="TM";
     @Test
     public void testHadoop() throws Exception {
 //        //获得文件内容
@@ -69,17 +73,17 @@ public class HadoopTest {
 //        System.out.println(hBaseAdmin.tableExists(tableName));
 
         Map<String, String> map = new HashMap<>();
-        map.put("Z", "z");
-        map.put("ZRCD", "zrcd");
-        map.put("STCD", "stcd");
-        map.put("Q", "q");
-        map.put("TM", "tm");
+        map.put(Z, "z");
+        map.put(ZRCD, "zrcd");
+        map.put(STCD, "stcd");
+        map.put(Q, "q");
+        map.put(TM, "tm");
 //        Scan scan=new Scan();
 //        scan.addFamily(familyName.getBytes());
 //        scan.setStartRow("08B26011340020150716".getBytes()); //设置开始 rowkey
 //        scan.setStopRow("09B26011340020150511".getBytes()); //设置结束 rowkey
 //        scan.setFilter(new SingleColumnValueFilter(
-//                familyName.getBytes(),"Z".getBytes(), CompareFilter.CompareOp.EQUAL,"18.1".getBytes())); //查询Z 的值为18.1的行
+//                familyName.getBytes(),Z.getBytes(), CompareFilter.CompareOp.EQUAL,"18.1".getBytes())); //查询Z 的值为18.1的行
 //        scan.setFilter(new RowFilter(CompareFilter.CompareOp.EQUAL,
 //                new RegexStringComparator("06B.*2014.*")));
 //        //获得所有符合scan 过滤过的数据
@@ -101,12 +105,12 @@ public class HadoopTest {
 
     @Test
     public void testHbasePutData() {
-        hbaseTemplate.put(tableName, rowKey, familyName, "ZRCD", "123".getBytes());
+        hbaseTemplate.put(tableName, rowKey, familyName, ZRCD, "123".getBytes());
     }
 
     @Test
     public void testHbaseDeleteData() {
-        hbaseTemplate.delete(tableName, rowKey, familyName, "ZRCD");
+        hbaseTemplate.delete(tableName, rowKey, familyName, ZRCD);
     }
 
     @Test
@@ -115,7 +119,7 @@ public class HadoopTest {
             Get get = new Get(rowKey.getBytes());
             return hTableInterface.get(get);
         });
-        System.out.println(Bytes.toString(result.getValue(familyName.getBytes(), "Z".getBytes())));
+        System.out.println(Bytes.toString(result.getValue(familyName.getBytes(), Z.getBytes())));
     }
 
     //这里将所有数据的TM列的末尾 添加了0 原来是2015-05-21 00:00:0 现在是2015-05-21 00:00:00
@@ -124,15 +128,15 @@ public class HadoopTest {
         //先读取原来数据，将其put进去就好了
         //这里所有的时间戳数据全都有问题
         Map<String, String> map = new HashMap<>();
-        map.put("Z", "z");
-        map.put("ZRCD", "zrcd");
-        map.put("STCD", "stcd");
-        map.put("Q", "q");
-        map.put("TM", "tm");
+        map.put(Z, "z");
+        map.put(ZRCD, "zrcd");
+        map.put(STCD, "stcd");
+        map.put(Q, "q");
+        map.put(TM, "tm");
         List<TestBean> lists = hbaseTemplate.find(tableName, familyName,
                 (result, i) -> new HBaseResultBuilder<>(familyName,result,new TestBean()).buildRow("rowKey").build(map).fetch());
         for (TestBean temp : lists) {
-            hbaseTemplate.put(tableName, temp.getRowKey(), familyName, "TM", (temp.getTm().substring(0,temp.getTm().length()-1) + "0").getBytes());
+            hbaseTemplate.put(tableName, temp.getRowKey(), familyName, TM, (temp.getTm().substring(0,temp.getTm().length()-1) + "0").getBytes());
         }
     }
 
@@ -140,8 +144,8 @@ public class HadoopTest {
     @Test
     public void testHBaseResultBuilderFecth(){
         Map<String,String> temp=hbaseTemplate.get(tableName,rowKey,
-                (result, i) -> HBaseResultTransformer.fetchMapWithRowKey(familyName,result,"Z","TM"));
-        System.out.println(temp.get(HBaseResultTransformer.ROW_KEY)+"\t"+temp.get("Z")+"\t"+temp.get("TM"));
+                (result, i) -> HBaseResultTransformer.fetchMapWithRowKey(familyName,result,Z,TM));
+        System.out.println(temp.get(HBaseResultTransformer.ROW_KEY)+"\t"+temp.get(Z)+"\t"+temp.get(TM));
     }
 
 }
