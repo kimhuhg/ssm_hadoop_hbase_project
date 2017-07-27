@@ -21,6 +21,7 @@ import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import test.testBeans.MyResult;
+import test.testBeans.TestBean;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -38,7 +39,8 @@ public class HadoopTest {
     private final String encoding = "utf-8";
     private String tableName = "bigtable_hydro";
     private String familyName = "hydro";
-    private String rowKey="09B26011340020140531";
+    private String rowKey = "09B26011340020140531";
+
     @Test
     public void testHadoop() throws Exception {
 //        //获得文件内容
@@ -70,31 +72,81 @@ public class HadoopTest {
     }
 
     @Test
-    public void testHbase() throws Exception {
+    public void testHbaseGetDataForBeans() throws Exception {
+//         //hbase提供的 访问API
 //        Configuration configuration = HBaseConfiguration.create();
 //        configuration.addResource("test/configurationFiles/testHadoop/hbase-site.xml");
 //        Connection conn = ConnectionFactory.createConnection(configuration);
 //        HBaseAdmin hBaseAdmin = (HBaseAdmin) conn.getAdmin();
 //        System.out.println(hBaseAdmin.tableExists(tableName));
 
-        Map<String,String> map=new HashMap<>();
-        map.put("Z","z");
-        map.put("ZRCD","zrcd");
-        map.put("STCD","stcd");
-        map.put("Q","q");
-        map.put("TM","tm");
-        Scan scan=new Scan();
-        scan.addFamily(familyName.getBytes());
+        Map<String, String> map = new HashMap<>();
+        map.put("Z", "z");
+        map.put("ZRCD", "zrcd");
+        map.put("STCD", "stcd");
+        map.put("Q", "q");
+        map.put("TM", "tm");
+//        Scan scan=new Scan();
+//        scan.addFamily(familyName.getBytes());
 //        scan.setStartRow("08B26011340020150716".getBytes()); //设置开始 rowkey
 //        scan.setStopRow("09B26011340020150511".getBytes()); //设置结束 rowkey
 //        scan.setFilter(new SingleColumnValueFilter(
 //                familyName.getBytes(),"Z".getBytes(), CompareFilter.CompareOp.EQUAL,"18.1".getBytes())); //查询Z 的值为18.1的行
-        scan.setFilter(new RowFilter(CompareFilter.CompareOp.EQUAL,
-                new RegexStringComparator("06B.*2014.*")));
-        List<MyResult> myResults=hbaseTemplate.find(tableName, scan,
-            (result, i) -> new HbaseFindBuilder<>(familyName,result,new MyResult()).fetch(map)
+//        scan.setFilter(new RowFilter(CompareFilter.CompareOp.EQUAL,
+//                new RegexStringComparator("06B.*2014.*")));
+//        //获得所有符合scan 过滤过的数据
+//        List<MyResult> myResults=hbaseTemplate.find(tableName,scan,
+//            (result, i) -> new HbaseFindBuilder<>(familyName,result,new MyResult()).build(map).fetch()
+//        );
+        //获得所有table下的family数据
+        List<MyResult> myResults = hbaseTemplate.find(tableName, familyName,
+                (result, i) -> new HbaseFindBuilder<>(familyName, result, new MyResult()).build(map).fetch()
         );
-        for (MyResult myResult:myResults)
+        for (MyResult myResult : myResults)
             System.out.println(myResult);
+
+//        //获得某一条数据
+//        MyResult myResult=hbaseTemplate.get(tableName,rowKey,familyName,
+//                (result, i) -> new HbaseFindBuilder<>(familyName,result,new MyResult()).build(map).fetch());
+//        System.out.println(myResult);
     }
+
+    @Test
+    public void testHbasePutData() {
+        hbaseTemplate.put(tableName, rowKey, familyName, "ZRCD", "123".getBytes());
+    }
+
+    @Test
+    public void testHbaseDeleteData() {
+        hbaseTemplate.delete(tableName, rowKey, familyName, "ZRCD");
+    }
+
+    @Test
+    public void testHbaseExcute() {
+        Result result = hbaseTemplate.execute(tableName, hTableInterface -> {
+            Get get = new Get(rowKey.getBytes());
+            return hTableInterface.get(get);
+        });
+        System.out.println(Bytes.toString(result.getValue(familyName.getBytes(), "Z".getBytes())));
+    }
+
+    //这里将所有数据的TM列的末尾 添加了0 原来是2015-05-21 00:00:0 现在是2015-05-21 00:00:00
+    @Test
+    public void testHbaseUpdataData() {
+        //先读取原来数据，将其put进去就好了
+        //这里所有的时间戳数据全都有问题
+        Map<String, String> map = new HashMap<>();
+        map.put("Z", "z");
+        map.put("ZRCD", "zrcd");
+        map.put("STCD", "stcd");
+        map.put("Q", "q");
+        map.put("TM", "tm");
+        List<TestBean> lists = hbaseTemplate.find(tableName, familyName,
+                (result, i) -> new HbaseFindBuilder<>(familyName,result,new TestBean()).buildRow("rowKey").build(map).fetch());
+        for (TestBean temp : lists) {
+            hbaseTemplate.put(tableName, temp.getRowKey(), familyName, "TM", (temp.getTm().substring(0,temp.getTm().length()-1) + "0").getBytes());
+        }
+    }
+
+
 }
