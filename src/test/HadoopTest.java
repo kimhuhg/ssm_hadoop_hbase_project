@@ -1,31 +1,19 @@
 package test;
 
 import hadoop.HDFSUtil;
-import hadoop.hbase.HbaseFindBuilder;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.LocatedFileStatus;
-import org.apache.hadoop.fs.RemoteIterator;
-import org.apache.hadoop.hbase.*;
+import hadoop.hbase.HBaseResultTransformer;
+import hadoop.hbase.HBaseResultBuilder;
 import org.apache.hadoop.hbase.client.*;
-import org.apache.hadoop.hbase.filter.CompareFilter;
-import org.apache.hadoop.hbase.filter.RegexStringComparator;
-import org.apache.hadoop.hbase.filter.RowFilter;
-import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
-import org.springframework.data.hadoop.hbase.RowMapper;
-import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import test.testBeans.MyResult;
 import test.testBeans.TestBean;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +88,7 @@ public class HadoopTest {
 //        );
         //获得所有table下的family数据
         List<MyResult> myResults = hbaseTemplate.find(tableName, familyName,
-                (result, i) -> new HbaseFindBuilder<>(familyName, result, new MyResult()).build(map).fetch()
+                (result, i) -> new HBaseResultBuilder<>(familyName, result, new MyResult()).build(map).fetch()
         );
         for (MyResult myResult : myResults)
             System.out.println(myResult);
@@ -142,11 +130,18 @@ public class HadoopTest {
         map.put("Q", "q");
         map.put("TM", "tm");
         List<TestBean> lists = hbaseTemplate.find(tableName, familyName,
-                (result, i) -> new HbaseFindBuilder<>(familyName,result,new TestBean()).buildRow("rowKey").build(map).fetch());
+                (result, i) -> new HBaseResultBuilder<>(familyName,result,new TestBean()).buildRow("rowKey").build(map).fetch());
         for (TestBean temp : lists) {
             hbaseTemplate.put(tableName, temp.getRowKey(), familyName, "TM", (temp.getTm().substring(0,temp.getTm().length()-1) + "0").getBytes());
         }
     }
 
+    //测试HBaseResultBuilder的Fetch方法 将result结果转化成map对象
+    @Test
+    public void testHBaseResultBuilderFecth(){
+        Map<String,String> temp=hbaseTemplate.get(tableName,rowKey,
+                (result, i) -> HBaseResultTransformer.fetchMapWithRowKey(familyName,result,"Z","TM"));
+        System.out.println(temp.get(HBaseResultTransformer.ROW_KEY)+"\t"+temp.get("Z")+"\t"+temp.get("TM"));
+    }
 
 }

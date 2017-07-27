@@ -2,19 +2,17 @@ package hadoop.hbase;
 
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.util.StringUtils;
-import java.beans.PropertyDescriptor;
-import java.util.HashMap;
+
 import java.util.Map;
 
 /**
  * 用于封装读取到的数据到实体类中
  * @param <T> 实体类类名
  */
-public class HbaseFindBuilder<T> {
+public class HBaseResultBuilder<T> {
     private String family;  //列族名字
     private Result result;  //查询结果
     private T tBean; //结果输出的类
@@ -27,14 +25,13 @@ public class HbaseFindBuilder<T> {
      * @param result 结果
      * @param tBean  结果要填入的实体类
      */
-    public HbaseFindBuilder(String family, Result result, T tBean) {
+    public HBaseResultBuilder(String family, Result result, T tBean) {
         this.family = family;
         this.result = result;
         this.tBean = tBean;
         //获得类的包装类，用于读取写入属性值等
         beanWrapper=PropertyAccessorFactory.forBeanPropertyAccess(tBean);
     }
-
 
     /**
      * 取出写入的实体类
@@ -49,7 +46,7 @@ public class HbaseFindBuilder<T> {
      * @param map  qualifiers->attribute 与实体类属性一一对应的map
      * @return HbaseFindBuilder<T> 自身，用于流式操作
      */
-    public HbaseFindBuilder<T> build(Map<String, String> map){
+    public HBaseResultBuilder<T> build(Map<String, String> map){
         if (map == null || map.size() <= 0)
             return this;
         byte[] qualifierByte = null;
@@ -69,7 +66,7 @@ public class HbaseFindBuilder<T> {
      * @param qualifiers 二级列列表
      * @return HbaseFindBuilder<T> 自身，用于流式操作
      */
-    public HbaseFindBuilder<T> build(String... qualifiers){
+    public HBaseResultBuilder<T> build(String... qualifiers){
         if (qualifiers == null || qualifiers.length == 0)
             return this;
         byte[] qualifierByte = null;
@@ -89,7 +86,7 @@ public class HbaseFindBuilder<T> {
      * @param rowKey 对应实体类中的属性名称
      * @return HbaseFindBuilder<T> 自身，用于流式操作
      */
-    public HbaseFindBuilder<T> buildRow(String rowKey){
+    public HBaseResultBuilder<T> buildRow(String rowKey){
         if (rowKey == null || rowKey.length() == 0)
             return this;
         byte[] rowKeyBytes=result.getRow();
@@ -97,4 +94,5 @@ public class HbaseFindBuilder<T> {
             beanWrapper.setPropertyValue(rowKey,Bytes.toString(rowKeyBytes));
         return this;
     }
+
 }
