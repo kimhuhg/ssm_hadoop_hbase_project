@@ -55,6 +55,11 @@ public class HelloController {
         return "redirect:/mybatisTest.html";
     }
 
+    @RequestMapping(path = "/goBigDataTest")
+    public String goToBigDataPage(){
+        return "redirect:/bigdataTest.html";
+    }
+
     @RequestMapping(path = "/stringResult")
     @ResponseBody
     public String testStringResult() {

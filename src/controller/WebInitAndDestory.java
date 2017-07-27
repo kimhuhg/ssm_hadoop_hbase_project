@@ -18,5 +18,6 @@ public class WebInitAndDestory {
     @PreDestroy
     public void destory(){
         System.out.println("Web结束了");
+        System.exit(0);
     }
 }
