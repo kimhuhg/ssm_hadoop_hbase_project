@@ -1,7 +1,6 @@
 <component name="libraryTable">
   <library name="spring mvc-test">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.25.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/objenesis-2.5.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/mockito-core-2.7.22.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/junit-4.12.jar!/" />

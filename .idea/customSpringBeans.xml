@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CustomBeanRegistry">
+    <option name="map">
+      <map>
+        <entry key="&lt;hdp:hbase-configuration xmlns:hdp=&quot;http://www.springframework.org/schema/hadoop&quot; configuration-ref=&quot;hadoopConfiguration&quot; stop-proxy=&quot;true&quot; delete-connection=&quot;true&quot; /&gt;">
+          <value>
+            <list>
+              <CustomBeanInfo>
+                <option name="beanName" value="hbaseConfiguration" />
+                <option name="beanClassName" value="org.springframework.data.hadoop.hbase.HbaseConfigurationFactoryBean" />
+              </CustomBeanInfo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
